@@ -43,10 +43,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request ->
                         request
                                 .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh", "/api/v1/customer/add").permitAll()
+                                .requestMatchers("/api/v1/auth/change-password").hasAnyRole(UserRole.CUSTOMER.name(), UserRole.ADMIN.name())
                                 .requestMatchers("/api/v1/admin/**").hasRole(UserRole.ADMIN.name())
-                                .requestMatchers("/api/v1/customer/find-authenticated").hasRole(UserRole.CUSTOMER.name())
-                                .requestMatchers("/api/v1/customer/update-authenticated").hasRole(UserRole.CUSTOMER.name())
-                                .requestMatchers("/api/v1/customer/delete-authenticated").hasRole(UserRole.CUSTOMER.name())
+                                .requestMatchers(
+                                        "/api/v1/customer/find-authenticated",
+                                        "/api/v1/customer/update-authenticated",
+                                        "/api/v1/customer/delete-authenticated").hasRole(UserRole.CUSTOMER.name())
                                 .requestMatchers("/api/v1/customer/**").hasRole(UserRole.ADMIN.name())
                                 .anyRequest().authenticated()
                 )

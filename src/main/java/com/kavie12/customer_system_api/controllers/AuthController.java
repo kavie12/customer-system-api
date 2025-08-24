@@ -1,6 +1,7 @@
 package com.kavie12.customer_system_api.controllers;
 
 import com.kavie12.customer_system_api.dto.request.AuthRequestDto;
+import com.kavie12.customer_system_api.dto.request.ChangePasswordDto;
 import com.kavie12.customer_system_api.dto.response.StandardResponseDto;
 import com.kavie12.customer_system_api.services.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,15 @@ public class AuthController {
     public ResponseEntity<StandardResponseDto> refresh(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) throws IOException {
         return new ResponseEntity<>(
                 new StandardResponseDto(200, "Login Success.", authService.refresh(authHeader)),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<StandardResponseDto> changePassword(@RequestBody ChangePasswordDto dto) {
+        authService.changePassword(dto);
+        return new ResponseEntity<>(
+                new StandardResponseDto(200, "Password changed successfully.", null),
                 HttpStatus.OK
         );
     }
